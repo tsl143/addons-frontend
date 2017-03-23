@@ -37,7 +37,7 @@ img {
   padding: 10px 20px 20px;
 }
 
-@include respond-to('large') {
+@include respond-to("large") {
   .disco-pane {
     padding-top: 50px;
   }
@@ -49,8 +49,8 @@ img {
   padding-right: 68px; // 48px + 20px;
 
   [dir=rtl] & {
-    padding-right: 0;
     padding-left: 68px;
+    padding-right: 0;
   }
 }
 
@@ -68,12 +68,12 @@ header {
   }
 }
 
-@include respond-to('large') {
+@include respond-to("large") {
   header {
     background: inherit;
     border-bottom: 1px solid $header-border-color;
-    padding: 0 0 40px;
     margin: 0 0 40px;
+    padding: 0 0 40px;
 
     h1 {
       font-size: 20px;
@@ -129,7 +129,7 @@ header {
   }
 }
 
-@include respond-to('large') {
+@include respond-to("large") {
   .disco-content {
     font-size: 14px;
     margin-right: 50px;
@@ -178,8 +178,8 @@ header {
   }
 
   .disco-video {
-    margin: 0 84px;
     height: 288px;
+    margin: 0 84px;
     width: 512px;
   }
 
@@ -197,7 +197,7 @@ header {
   position: relative;
 }
 
-@include respond-to('large') {
+@include respond-to("large") {
   .video-wrapper {
     display: block;
   }

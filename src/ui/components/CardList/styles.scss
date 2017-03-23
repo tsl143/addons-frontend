@@ -12,8 +12,8 @@
 
     > li {
       background: transparentize($base-color, 0.25);
-      padding: 10px $padding-page;
       margin-bottom: 1px;
+      padding: 10px $padding-page;
 
       &:last-of-type {
         margin-bottom: 0;

@@ -44,7 +44,8 @@ $icon-margin-end: 12px;
 
 .SearchInput-label {
   @include font-regular();
-  // Include the start margin on the end so that icon and text is centred together.
+  // Include the start margin on the end so that icon and text is centred
+  // together.
   @include padding-end($icon-margin-start);
 
   display: inline-block;
