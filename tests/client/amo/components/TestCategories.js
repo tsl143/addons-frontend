@@ -7,7 +7,9 @@ import {
 import { Provider } from 'react-redux';
 
 import createStore from 'amo/store';
-import Categories from 'amo/components/Categories';
+import { CategoriesBase, mapStateToProps } from 'amo/components/Categories';
+import { ADDON_TYPE_THEME } from 'core/constants';
+import I18nProvider from 'core/i18n/Provider';
 import { getFakeI18nInst } from 'tests/client/helpers';
 
 
@@ -36,12 +38,16 @@ describe('Categories', () => {
       api: { clientApp: 'android', lang: 'fr' },
       categories,
     };
+    const fakeDispatch = sinon.stub();
 
     return findDOMNode(findRenderedComponentWithType(renderIntoDocument(
       <Provider store={createStore(initialState)}>
-        <Categories i18n={getFakeI18nInst()} {...baseProps} {...props} />
+        <I18nProvider i18n={getFakeI18nInst()}>
+          <CategoriesBase dispatch={fakeDispatch} i18n={getFakeI18nInst()}
+            {...baseProps} {...props} />
+        </I18nProvider>
       </Provider>
-    ), Categories));
+    ), CategoriesBase));
   }
 
   it('renders Categories', () => {
@@ -86,5 +92,43 @@ describe('Categories', () => {
     });
 
     assert.equal(root.textContent, 'Failed to load categories.');
+  });
+});
+
+describe('mapStateToProps', () => {
+  it('maps state to props', () => {
+    const props = mapStateToProps({
+      api: { clientApp: 'android', lang: 'pt' },
+      categories: {
+        categories: {
+          android: {
+            [ADDON_TYPE_THEME]: {
+              nature: {
+                name: 'Nature',
+                slug: 'nature',
+              },
+            },
+          },
+          firefox: {},
+        },
+        error: false,
+        loading: true,
+      },
+    }, {
+      params: { visibleAddonType: 'themes' },
+    });
+
+    assert.deepEqual(props, {
+      addonType: ADDON_TYPE_THEME,
+      categories: {
+        nature: {
+          name: 'Nature',
+          slug: 'nature',
+        },
+      },
+      clientApp: 'android',
+      error: false,
+      loading: true,
+    });
   });
 });

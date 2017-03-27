@@ -12,7 +12,7 @@ import HandleLogin from 'core/containers/HandleLogin';
 
 import AddonReviewList from './components/AddonReviewList';
 import App from './containers/App';
-import CategoryList from './containers/CategoryList';
+import Categories from './components/Categories';
 import CategoryPage from './containers/CategoryPage';
 import FeaturedAddons from './components/FeaturedAddons';
 import LandingPage from './components/LandingPage';
@@ -32,7 +32,15 @@ export default (
     <IndexRoute component={Home} />
     <Route path="addon/:slug/" component={DetailPage} />
     <Route path="addon/:addonSlug/reviews/" component={AddonReviewList} />
-    <Route path=":visibleAddonType/categories/" component={CategoryList} />
+    {/* These user routes are to make the proxy serve each URL from */}
+    {/* addons-server until we can fix the :visibleAddonType route below. */}
+    {/* https://github.com/mozilla/addons-frontend/issues/2029 */}
+    {/* We are mimicing these URLs: https://github.com/mozilla/addons-server/blob/master/src/olympia/users/urls.py#L20 */}
+    <Route path="users/:userAction" component={NotFound} />
+    <Route path="users/:userAction/" component={NotFound} />
+    {/* https://github.com/mozilla/addons-frontend/issues/1975 */}
+    <Route path="user/:user/" component={NotFound} />
+    <Route path=":visibleAddonType/categories/" component={Categories} />
     <Route path=":visibleAddonType/featured/" component={FeaturedAddons} />
     <Route path=":visibleAddonType/:slug/" component={CategoryPage} />
     <Route path="/api/v3/accounts/authenticate/" component={HandleLogin} />
