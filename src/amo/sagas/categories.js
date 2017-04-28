@@ -2,10 +2,10 @@ import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import {
   categoriesFail,
-  categoriesFetch,
   categoriesLoad,
 } from 'core/actions/categories';
 import { categories as categoriesApi } from 'core/api';
+import { CATEGORIES_FETCH } from 'core/constants';
 
 import { getApi } from './utils';
 
@@ -26,5 +26,5 @@ export function* fetchCategories() {
   Allows concurrent fetches of categoriesFetch.
 */
 export default function* categoriesSaga() {
-  yield takeEvery(categoriesFetch().type, fetchCategories);
+  yield takeEvery(CATEGORIES_FETCH, fetchCategories);
 }

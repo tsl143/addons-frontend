@@ -1,9 +1,10 @@
-import { call, put, select } from 'redux-saga/effects';
+import { call, put, select, takeEvery } from 'redux-saga/effects';
 
-import { fetchCategories } from 'amo/sagas/categories';
+import categoriesSaga, { fetchCategories } from 'amo/sagas/categories';
 import { getApi } from 'amo/sagas/utils';
 import * as actions from 'core/actions/categories';
 import { categories as categoriesApi } from 'core/api';
+import { CATEGORIES_FETCH } from 'core/constants';
 
 
 const categories = {};
@@ -44,5 +45,10 @@ describe('categoriesSaga', () => {
     assert.deepEqual(next.value,
       put(actions.categoriesFail(error)),
       'must yield categoriesFail(error)');
+  });
+
+  it('should yield takeEvery() for the main generator', () => {
+    assert.deepEqual(categoriesSaga().next().value,
+      takeEvery(CATEGORIES_FETCH, fetchCategories));
   });
 });

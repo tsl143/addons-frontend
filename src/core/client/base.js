@@ -16,7 +16,7 @@ import I18nProvider from 'core/i18n/Provider';
 import log from 'core/logger';
 
 
-export default function makeClient(routes, createStore) {
+export default function makeClient(routes, createStore, rootSaga = null) {
   // This code needs to come before anything else so we get logs/errors
   // if anything else in this function goes wrong.
   const publicSentryDsn = config.get('publicSentryDsn');
@@ -48,6 +48,9 @@ export default function makeClient(routes, createStore) {
       }
     }
     const store = createStore(initialState);
+    if (rootSaga) {
+      store.runSaga(rootSaga);
+    }
 
     // wrapper to make redux-connect applyRouterMiddleware compatible see
     // https://github.com/taion/react-router-scroll/issues/3

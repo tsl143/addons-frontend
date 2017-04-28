@@ -3,7 +3,6 @@ import { createStore as _createStore, combineReducers } from 'redux';
 import { reducer as reduxAsyncConnect } from 'redux-connect';
 import createSagaMiddleware from 'redux-saga';
 
-import categoriesSaga from 'amo/sagas/categories';
 import featured from 'amo/reducers/featured';
 import landing from 'amo/reducers/landing';
 import reviews from 'amo/reducers/reviews';
@@ -43,7 +42,7 @@ export default function createStore(initialState = {}) {
     middleware({ sagaMiddleware }),
   );
 
-  sagaMiddleware.run(categoriesSaga);
+  store.runSaga = sagaMiddleware.run;
 
   return store;
 }
