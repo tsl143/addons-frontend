@@ -1,3 +1,4 @@
+import { hideLoading } from 'react-redux-loading-bar';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import categoriesSaga, { fetchCategories } from 'amo/sagas/categories';
@@ -24,6 +25,10 @@ describe('categoriesSaga', () => {
     next = fetchCategoriesGenerator.next(categories);
     assert.deepEqual(next.value, put(actions.categoriesLoad(categories)),
       'must yield categoriesLoad(categories)');
+
+    next = fetchCategoriesGenerator.next();
+    assert.deepEqual(next.value, put(hideLoading()),
+      'must yield hideLoading()');
   });
 
   it('should dispatch fail if API request fails', () => {
@@ -37,14 +42,17 @@ describe('categoriesSaga', () => {
     assert.deepEqual(next.value, call(categoriesApi, { api: undefined }),
       'must yield categoriesApi');
 
-    // No response is defined so this will fail.
-    // TODO: Make this a bit more explicit; failing on a TypeError rather
-    // than an API error is pretty weak.
-    const error = new TypeError('response is undefined');
-    next = fetchCategoriesGenerator.next();
+    // Make the response undefined so an error is encountered and the saga
+    // encounters an error.
+    const error = new Error('response is undefined');
+    next = fetchCategoriesGenerator.next(undefined);
     assert.deepEqual(next.value,
       put(actions.categoriesFail(error)),
       'must yield categoriesFail(error)');
+
+    next = fetchCategoriesGenerator.next();
+    assert.deepEqual(next.value, put(hideLoading()),
+      'must yield hideLoading()');
   });
 
   it('should yield takeEvery() for the main generator', () => {

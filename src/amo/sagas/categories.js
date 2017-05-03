@@ -1,3 +1,4 @@
+import { hideLoading } from 'react-redux-loading-bar';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import {
@@ -16,8 +17,10 @@ export function* fetchCategories() {
     const api = yield select(getApi);
     const response = yield call(categoriesApi, { api });
     yield put(categoriesLoad(response));
+    yield put(hideLoading());
   } catch (err) {
     yield put(categoriesFail(err));
+    yield put(hideLoading());
   }
 }
 

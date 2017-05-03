@@ -72,6 +72,18 @@ describe('Categories', () => {
     assert.include(root.textContent, 'Loading');
   });
 
+  it('renders placeholders when loading', () => {
+    const root = render({
+      addonType: 'extension',
+      categories: [],
+      error: false,
+      loading: true,
+    });
+
+    assert.equal(
+      root.querySelectorAll('.Categories-list-item .LoadingText').length, 10);
+  });
+
   it('renders a message when there are no categories', () => {
     const root = render({
       addonType: 'extension',
