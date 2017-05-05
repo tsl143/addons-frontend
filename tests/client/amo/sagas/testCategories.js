@@ -1,4 +1,4 @@
-import { hideLoading } from 'react-redux-loading-bar';
+import { hideLoading, showLoading } from 'react-redux-loading-bar';
 import { call, put, select, takeEvery } from 'redux-saga/effects';
 
 import categoriesSaga, { fetchCategories } from 'amo/sagas/categories';
@@ -15,6 +15,10 @@ describe('categoriesSaga', () => {
     const fetchCategoriesGenerator = fetchCategories();
 
     let next = fetchCategoriesGenerator.next();
+    assert.deepEqual(
+      next.value, put(showLoading()), 'should dispatch show loading bar');
+
+    next = fetchCategoriesGenerator.next();
     const api = next.value;
     assert.deepEqual(api, select(getApi), 'must yield getApi');
 
@@ -35,6 +39,10 @@ describe('categoriesSaga', () => {
     const fetchCategoriesGenerator = fetchCategories();
 
     let next = fetchCategoriesGenerator.next();
+    assert.deepEqual(
+      next.value, put(showLoading()), 'should dispatch show loading bar');
+
+    next = fetchCategoriesGenerator.next();
     const api = next.value;
     assert.deepEqual(api, select(getApi), 'must yield getApi');
 

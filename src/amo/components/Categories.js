@@ -1,7 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { showLoading } from 'react-redux-loading-bar';
 
 import Link from 'amo/components/Link';
 import { categoriesFetch } from 'core/actions/categories';
@@ -26,7 +25,6 @@ export class CategoriesBase extends React.Component {
   componentWillMount() {
     const { addonType, categories, clientApp, dispatch } = this.props;
     if (!Object.values(categories).length) {
-      dispatch(showLoading());
       dispatch(categoriesFetch({ addonType, clientApp }));
     }
   }
