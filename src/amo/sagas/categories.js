@@ -18,7 +18,6 @@ export function* fetchCategories() {
     const api = yield select(getApi);
     const response = yield call(categoriesApi, { api });
     yield put(categoriesLoad(response));
-    // yield put(hideLoading());
   } catch (err) {
     yield put(categoriesFail(err));
   } finally {
