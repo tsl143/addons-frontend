@@ -7,7 +7,7 @@ import {
 export function categoriesFetch() {
   return {
     type: CATEGORIES_FETCH,
-    payload: { loading: true },
+    payload: {},
   };
 }
 
