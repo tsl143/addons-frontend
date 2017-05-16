@@ -7,4 +7,4 @@ import routes from './routes';
 import sagas from './sagas';
 import createStore from './store';
 
-makeClient(routes, createStore, sagas);
+makeClient(routes, createStore, { sagas });

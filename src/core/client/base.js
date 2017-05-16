@@ -16,7 +16,9 @@ import I18nProvider from 'core/i18n/Provider';
 import log from 'core/logger';
 
 
-export default function makeClient(routes, createStore, rootSaga = null) {
+export default function makeClient(
+  routes, createStore, { sagas = null } = {},
+) {
   // This code needs to come before anything else so we get logs/errors
   // if anything else in this function goes wrong.
   const publicSentryDsn = config.get('publicSentryDsn');
@@ -48,8 +50,10 @@ export default function makeClient(routes, createStore, rootSaga = null) {
       }
     }
     const store = createStore(initialState);
-    if (rootSaga) {
-      store.runSaga(rootSaga);
+    if (sagas) {
+      store.runSaga(sagas);
+    } else {
+      log.warn(`sagas not found for this app (src/{$appName}/sagas)`);
     }
 
     // wrapper to make redux-connect applyRouterMiddleware compatible see

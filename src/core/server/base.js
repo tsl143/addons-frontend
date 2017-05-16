@@ -307,19 +307,20 @@ function baseServer(routes, createStore, { appInstanceName = appName } = {}) {
 
           // TODO: Remove the try/catch block once all apps are using
           // redux-saga.
-          let rootSaga;
+          let sagas;
           try {
             // eslint-disable-next-line global-require, import/no-dynamic-require
-            rootSaga = require(`${appName}/sagas`).default;
+            sagas = require(`${appName}/sagas`).default;
           } catch (err) {
-            log.warn(`sagas not found for ${appName}`, err);
+            log.warn(
+              `sagas not found for this app (src/{$appName}/sagas)`, err);
           }
 
-          if (!rootSaga) {
+          if (!sagas) {
             return hydrateOnClient({ props, pageProps, res });
           }
 
-          const sagas = store.runSaga(rootSaga);
+          const runningSagas = store.runSaga(sagas);
           // We need to render once because it will force components
           // with sagas to call the sagas and load their data.
           ReactDOM.renderToString(<ServerHtml {...pageProps} {...props} />);
@@ -329,7 +330,7 @@ function baseServer(routes, createStore, { appInstanceName = appName } = {}) {
           store.dispatch(END);
 
           // Once all sagas have completed, we load the page.
-          return sagas.done.then(() => {
+          return runningSagas.done.then(() => {
             return hydrateOnClient({ props, pageProps, res });
           });
         })
