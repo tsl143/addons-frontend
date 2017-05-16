@@ -11,7 +11,6 @@ import { CATEGORIES_FETCH } from 'core/constants';
 import { getApi } from './utils';
 
 
-// worker Saga: will be fired on every CATEGORIES_FETCH action.
 export function* fetchCategories() {
   try {
     yield put(showLoading());
@@ -25,10 +24,8 @@ export function* fetchCategories() {
   }
 }
 
-/*
-  Starts fetchUser on each dispatched `categoriesFetch` action.
-  Allows concurrent fetches of categoriesFetch.
-*/
+// Starts fetchUser on each dispatched `categoriesFetch` action.
+// Allows concurrent fetches of categoriesFetch.
 export default function* categoriesSaga() {
   yield takeEvery(CATEGORIES_FETCH, fetchCategories);
 }
