@@ -34,8 +34,11 @@ export default class LoadingText extends React.Component {
         className={classNames(
           'LoadingText',
           `LoadingText--delay-${delayStart}`,
-          `LoadingText--width-${width}`,
-        )} />
+        )}
+        style={{
+          width: `${width}%`,
+        }}
+      />
     );
   }
 }
