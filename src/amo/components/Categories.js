@@ -60,6 +60,11 @@ export class CategoriesBase extends React.Component {
 
     return (
       <div className="Categories">
+        {loading ? (
+          <div className="Categories-loadingText">
+            {i18n.gettext('Loading categories.')}
+          </div>
+        ) : null}
         <ul className="Categories-list"
           ref={(ref) => { this.categories = ref; }}>
           {categories.map((category) => (
