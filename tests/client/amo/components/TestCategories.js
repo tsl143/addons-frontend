@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 
 import createStore from 'amo/store';
 import { CategoriesBase, mapStateToProps } from 'amo/components/Categories';
+import { categoriesFetch } from 'core/actions/categories';
 import { ADDON_TYPE_THEME } from 'core/constants';
 import I18nProvider from 'core/i18n/Provider';
 import { getFakeI18nInst } from 'tests/client/helpers';
@@ -30,10 +31,7 @@ const categories = {
 
 describe('Categories', () => {
   function render({ ...props }) {
-    const baseProps = {
-      clientApp: 'android',
-      categories,
-    };
+    const baseProps = { clientApp: 'android', categories };
     const initialState = {
       api: { clientApp: 'android', lang: 'fr' },
       categories,
@@ -82,6 +80,32 @@ describe('Categories', () => {
 
     assert.equal(
       root.querySelectorAll('.Categories-list-item .LoadingText').length, 10);
+  });
+
+  it('dispatches categoriesFetch() on first render (empty categories)', () => {
+    const fakeDispatch = sinon.stub();
+
+    const root = render({
+      addonType: 'extension',
+      categories: {},
+      dispatch: fakeDispatch,
+      loading: false,
+    });
+
+    assert.deepEqual(fakeDispatch.firstCall.args[0],
+      categoriesFetch({ addonType: 'extension', clientApp: 'android' }));
+  });
+
+  it('dispatches nothing on first render (if categories exist)', () => {
+    const fakeDispatch = sinon.stub();
+
+    const root = render({
+      addonType: 'extension',
+      dispatch: fakeDispatch,
+      loading: false,
+    });
+
+    assert.equal(fakeDispatch.called, false);
   });
 
   it('renders a message when there are no categories', () => {
