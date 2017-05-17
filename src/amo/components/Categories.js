@@ -30,24 +30,16 @@ export class CategoriesBase extends React.Component {
   }
 
   render() {
-    const { addonType, categories, error, loading, i18n } = this.props;
+    const { addonType, error, loading, i18n } = this.props;
+    let { categories } = this.props;
 
-    if (loading) {
-      return (
-        <div className="Categories">
-          <span className="visually-hidden">{i18n.gettext('Loading…')}</span>
-          <ul className="Categories-list"
-            ref={(ref) => { this.categories = ref; }}>
-            {Array(10).fill(0).map(() => (
-              <li className="Categories-list-item">
-                <span className="Categories-link">
-                  <LoadingText range={25} />
-                </span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      );
+    // If we aren't loading then get just the values of the categories object.
+    if (!loading) {
+      categories = Object.values(categories);
+    } else {
+      // If we are loading we just set the length of the categories array to
+      // ten (10) because we want ten placeholders.
+      categories = Array(10).fill(0);
     }
 
     if (error) {
@@ -58,7 +50,7 @@ export class CategoriesBase extends React.Component {
       );
     }
 
-    if (!Object.values(categories).length) {
+    if (!categories.length) {
       return (
         <div className="Categories">
           <p>{i18n.gettext('No categories found.')}</p>
@@ -70,12 +62,18 @@ export class CategoriesBase extends React.Component {
       <div className="Categories">
         <ul className="Categories-list"
           ref={(ref) => { this.categories = ref; }}>
-          {Object.values(categories).map((category) => (
+          {categories.map((category) => (
             <li className="Categories-list-item">
-              <Link className="Categories-link"
-                to={`/${visibleAddonType(addonType)}/${category.slug}/`}>
-                {category.name}
-              </Link>
+              {loading ? (
+                <span className="Categories-link">
+                  <LoadingText range={25} />
+                </span>
+              ) : (
+                <Link className="Categories-link"
+                  to={`/${visibleAddonType(addonType)}/${category.slug}/`}>
+                  {category.name}
+                </Link>
+              )}
             </li>
           ))}
         </ul>
