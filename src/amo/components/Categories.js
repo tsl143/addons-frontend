@@ -24,7 +24,7 @@ export class CategoriesBase extends React.Component {
 
   componentWillMount() {
     const { addonType, categories, clientApp, dispatch } = this.props;
-    if (!Object.values(categories).length) {
+    if (!categories) { // || Object.values(categories).length) {
       dispatch(categoriesFetch({ addonType, clientApp }));
     }
   }
@@ -35,7 +35,7 @@ export class CategoriesBase extends React.Component {
 
     // If we aren't loading then get just the values of the categories object.
     if (!loading) {
-      categories = Object.values(categories);
+      categories = categories ? Object.values(categories) : [];
     } else {
       // If we are loading we just set the length of the categories array to
       // ten (10) because we want ten placeholders.
@@ -61,7 +61,7 @@ export class CategoriesBase extends React.Component {
     return (
       <div className="Categories">
         {loading ? (
-          <div className="Categories-loadingText">
+          <div className="Categories-loadingText visually-hidden">
             {i18n.gettext('Loading categories.')}
           </div>
         ) : null}
@@ -91,7 +91,7 @@ export function mapStateToProps(state, ownProps) {
   const addonType = apiAddonType(ownProps.params.visibleAddonType);
   const clientApp = state.api.clientApp;
   const categories = state.categories.categories[clientApp][addonType] ?
-    state.categories.categories[clientApp][addonType] : {};
+    state.categories.categories[clientApp][addonType] : null;
 
   return {
     addonType,
