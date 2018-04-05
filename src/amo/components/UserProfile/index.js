@@ -78,6 +78,13 @@ export class UserProfileBase extends React.Component<Props> {
       <React.Fragment>
         <UserAvatar className="UserProfile-avatar" user={user} />
 
+        {user && (user.is_addon_developer || user.is_artist) &&
+          <div className="UserProfile-userType">
+            {user.is_addon_developer && <div>{i18n.gettext('Add-ons developer')}</div>}
+            {user.is_artist && <div>{i18n.gettext('Theme artist')}</div>}
+          </div>
+        }
+
         <h1 className="UserProfile-name">
           {user ? user.displayName : <LoadingText />}
         </h1>

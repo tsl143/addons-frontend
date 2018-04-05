@@ -18,6 +18,11 @@ $avatar-size: 64px;
 }
 
 .UserProfile-user-info {
+  .Card-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
   @include respond-to(large) {
     min-width: 300px;
     width: 35%;
@@ -40,6 +45,7 @@ $avatar-size: 64px;
   @include font-regular();
 
   font-size: $font-size-l;
+  grid-column: 1 / span 2;
   margin: 0;
 
   @include respond-to(medium) {
@@ -55,4 +61,11 @@ $avatar-size: 64px;
 
 .UserProfile-abuse-button .ReportUserAbuse-show-more {
   width: 100%;
+}
+
+.UserProfile-userType {
+  font-weight: normal;
+  grid-column: 2;
+
+  @include text-align-end();
 }
